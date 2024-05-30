@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+
+    <title>Live_data</title>
+
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <!-- Bootstrap Core CSS -->
+    <link href="static/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="static/css/agency.css" rel="stylesheet">
+
+    <!-- Custom Fonts -->
+    <link href="font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">
+    <link href='https://fonts.googleapis.com/css?family=Kaushan+Script' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Roboto+Slab:400,100,300,700' rel='stylesheet' type='text/css'>
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+<style>.live-data-box {
+    background-color: white;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-bottom: 20px;
+}
+</style>
+
+<body id="page-top" class="index">
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-default navbar-fixed-top">
+        <div class="container">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header page-scroll">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand page-scroll" href="#page-top">Currentsense pro</a>
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav navbar-right">
+                    <li class="hidden">
+                        <a href="#page-top"></a>
+                    </li>
+                    
+                    <!--<li>
+                        <a class="page-scroll" href="#contact">Contact</a>
+                    </li>
+                </ul>
+            </div>-->
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container-fluid -->
+    </nav>
+
+    <!-- Header 
+    <header>
+        <div class="container">
+            <div class="intro-text">
+                <div class="intro-lead-in">Welcome To Our Studio!</div>
+                <div class="intro-heading">It's Nice To Meet You</div>
+                <a href="#services" class="page-scroll btn btn-xl">Tell Me More</a>
+            </div>
+        </div>
+    </header>-->
+
+    
+
+    
+    
+    <!-- Contact Section -->
+    <section id="contact">
+        <div class="container" style="margin-top: -80px;">
+            <div class="row">
+                <div class="col-lg-12 text-center">
+                    <h2 class="section-heading">LIVE DATA</h2>
+                    <h3 class="section-subheading text-muted">Real-time current and voltage consumption.</h3>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <form name="sentMessage" id="contactForm" novalidate>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="live-data-box">
+                                    <h4>Live Current:</h4>
+                                    <div id="liveCurrent"></div>
+                                </div>
+                                <div class="live-data-box">
+                                    <h4>Total Current:</h4>
+                                    <span id="totalCurrent"></span>
+                                </div>
+                                <div class="live-data-box">
+                                    <h4>Power in Kw:</h4>
+                                    <span id="powerKw"></span>
+                                </div>
+                                <div class="live-data-box">
+                                    <h4>Bill in Rupees:</h4>
+                                    <span id="billRupees"></span>
+                                </div>
+                            </div>
+                        
+                        
+                            <div class="col-md-6">
+                                <div class="form-group">
+
+    
+                                    <div id="current-graph-container"></div>
+                                
+                                    <script>
+                                        // Data arrays for each graph
+                                        
+                                        var currentData = [], currentTime = [];
+                                
+                                        function getData() {
+                                            fetch('/data')  // Fetch data from Python endpoint (replace with actual URL)
+                                                .then(response => response.json())
+                                                .then(data => {
+                                                    
+                                
+                                                    currentTime.push(new Date());  // Add timestamp for current graph
+                                                    currentData.push(data.CURRENT);
+                                
+                                                    // Update voltage graph
+                                                   
+                                
+                                                    // Update current graph (similar format as voltage graph)
+                                                    var currentGraph = {
+                                                        data: [
+                                                            {
+                                                                x: currentTime,
+                                                                y: currentData,
+                                                                type: 'scatter',
+                                                                mode: 'lines+markers',
+                                                                name: 'Current (A)'
+                                                            }
+                                                        ],
+                                                        layout: {
+                                                            title: 'Live Current vs. Time',
+                                                            xaxis: { title: 'Time' },
+                                                            yaxis: { title: 'Current (A)' },
+                                                            // Set appropriate x-axis range based on data size
+                                                            xaxis: {
+                                                                range: [currentTime[currentTime.length - Math.ceil(currentTime.length / 5)], new Date()]
+                                                            }
+                                                        }
+                                                    };
+                                                    Plotly.newPlot('current-graph-container', currentGraph);
+                                                });
+                                        }
+                                
+                                        setInterval(getData, 5000);  // Fetch data every 5 seconds
+                                
+                                        getData();  // Get initial data on page load
+                                    </script>
+                                   
+                                </div>
+                            </div>
+                            </div>
+                            <div class="clearfix"></div>
+                            <div class="col-lg-11 text-center">
+                                <div id="success"></div>
+                                <!-- Inline link to go back to room1.html-->
+                                <a href="{{ url_for('socket1') }}" class="btn btn-xl">Back</a>
+
+                            
+                       
+                                <div class="col-lg-7 text-center">       
+                                <div id="success"></div>
+                                <!-- Inline link to go back to room1.html-->
+                                <a href="{{ url_for('line_chart') }}" class="btn btn-xl">GRAPH</a>
+
+                            </div>
+                        </div>
+                    </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4">
+                    <span class="copyright">Copyright &copy; Your Website 2014</span>
+                </div>
+                <div class="col-md-4">
+                    <ul class="list-inline social-buttons">
+                        <li><a href="#"><i class="fa fa-twitter"></i></a>
+                        </li>
+                        <li><a href="#"><i class="fa fa-facebook"></i></a>
+                        </li>
+                        <li><a href="#"><i class="fa fa-linkedin"></i></a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="col-md-4">
+                    <ul class="list-inline quicklinks">
+                        <li><a href="{{ url_for('privacy1') }}">Privacy Policy</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+
+
+
+    <script>
+        setInterval(function() {
+            // Fetch new sensor data
+            fetch('/sensor_data')
+                .then(response => response.json())
+                .then(data => {
+                    // Update live voltage and current
+                    document.getElementById('liveCurrent').textContent = data.CURRENT.toFixed(2);
+                    document.getElementById('totalCurrent').textContent = data.TOTAL_CURRENT.toFixed(2);
+                    document.getElementById('powerKw').textContent = data.POWER_IN_Kw.toFixed(2);
+                    document.getElementById('billRupees').textContent = data.BILL_IN_RUPEES.toFixed(2);
+                })
+                .catch(error => console.error('Error fetching sensor data:', error));
+        }, 1000); // Update every second
+
+        function goBack() {
+            window.history.back();
+        }
+    </script>
+
+    <!-- Portfolio Modals -->
+    <!-- Use the modals below to showcase details about your portfolio projects! -->
+
+    <!-- jQuery -->
+    <script src="static/js/jquery.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="static/js/bootstrap.min.js"></script>
+
+    <!-- Plugin JavaScript -->
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js"></script>
+    <script src="static/js/classie.js"></script>
+    <script src="static/js/cbpAnimatedHeader.js"></script>
+
+    <!-- Contact Form JavaScript -->
+    <script src="static/js/jqBootstrapValidation.js"></script>
+    <script src="static/js/contact_me.js"></script>
+
+    <!-- Custom Theme JavaScript -->
+    <script src="static/js/agency.js"></script>
+
+</body>
+
+</html>

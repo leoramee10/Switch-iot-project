@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Update LED Status</title>
+    <script src="https://www.gstatic.com/firebasejs/9.5.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.5.0/firebase-database.js"></script>
+</head>
+<body>
+    <h1>Update LED Status</h1>
+    <label for="ledStatus">LED Status (0 or 1):</label>
+    <input type="number" id="ledStatus" name="ledStatus" min="0" max="1" required>
+    <button onclick="updateLEDStatus()">Update</button>
+
+    <script>
+        // Initialize Firebase
+        const firebaseConfig = {
+            apiKey: "from firebase",
+  authDomain: "from firebase",
+  databaseURL: "from firebase",
+  projectId: "from firebase",
+  storageBucket: "from firebase",
+  messagingSenderId: "from firebase",
+  appId: "from firebase"
+        };
+        firebase.initializeApp(firebaseConfig);
+        const database = firebase.database();
+
+        // Function to update LED_STATUS in Firebase
+        function updateLEDStatus() {
+            const status = document.getElementById("ledStatus").value;
+
+            // Update LED_STATUS in Firebase
+            database.ref('/').update({'LED_STATUS': status})
+                .then(() => {
+                    alert('LED status updated successfully');
+                })
+                .catch((error) => {
+                    console.error('Failed to update LED status:', error);
+                });
+        }
+    </script>
+</body>
+</html>

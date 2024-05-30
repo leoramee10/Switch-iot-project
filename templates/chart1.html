@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Live Sensor Data</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <h1>Live Sensor Data</h1>
+    <div>
+        <h2>Live Voltage:</h2>
+        <span id="liveVoltage"></span>
+    </div>
+    <div>
+        <h2>Live Current:</h2>
+        <span id="liveCurrent"></span>
+    </div>
+    <div>
+        <h2>Total Voltage:</h2>
+        <span id="totalVoltage"></span>
+    </div>
+    <div>
+        <h2>Total Current:</h2>
+        <span id="totalCurrent"></span>
+    </div>
+    <div>
+        <button onclick="goBack()">Back</button>
+    </div>
+
+    <script>
+        setInterval(function() {
+            // Fetch new sensor data
+            fetch('/sensor_data')
+                .then(response => response.json())
+                .then(data => {
+                    // Update live voltage and current
+                    document.getElementById('liveVoltage').innerText = data['VOLTAGE'] ? data['VOLTAGE'].toFixed(2) : 'N/A';
+                    document.getElementById('liveCurrent').innerText = data['CURRENT'] ? data['CURRENT'].toFixed(2) : 'N/A';
+
+                    // Update total voltage and current
+                    document.getElementById('totalVoltage').innerText = data['TOTAL_VOLTAGE'] ? data['TOTAL_VOLTAGE'].toFixed(2) : 'N/A';
+                    document.getElementById('totalCurrent').innerText = data['TOTAL_CURRENT'] ? data['TOTAL_CURRENT'].toFixed(2) : 'N/A';
+                })
+                .catch(error => console.error('Error fetching sensor data:', error));
+        }, 1000); // Update every second
+
+        function goBack() {
+            window.history.back();
+        }
+    </script>
+</body>
+</html>

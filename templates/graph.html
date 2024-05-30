@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arduino Data Graph</title>
+    <!-- Include Chart.js library -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <h1>Arduino Data Graph</h1>
+    
+    <!-- Create a canvas element for the chart -->
+    <canvas id="dataChart" width="800" height="400"></canvas>
+
+    <!-- Script to retrieve data from Arduino and update the chart -->
+    <script>
+        // Function to fetch data from Arduino (replace the URL with your Arduino endpoint)
+        async function fetchData() {
+            try {
+                const response = await fetch('http://your-arduino-endpoint/data');
+                const data = await response.json();
+                return data;
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            }
+        }
+
+        // Function to update the chart with new data
+        async function updateChart() {
+            const data = await fetchData();
+
+            // Access data properties and update the chart accordingly
+            // Example: Assume data has 'labels' and 'values' properties
+            const labels = data.labels;
+            const values = data.values;
+
+            // Access the canvas element and create a chart
+            const ctx = document.getElementById('dataChart').getContext('2d');
+            const chart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Arduino Data',
+                        data: values,
+                        borderColor: 'rgba(75, 192, 192, 1)',
+                        borderWidth: 2,
+                        fill: false
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        x: [{
+                            type: 'linear',
+                            position: 'bottom'
+                        }],
+                        y: [{
+                            type: 'linear',
+                            position: 'left'
+                        }]
+                    }
+                }
+            });
+        }
+
+        // Call the updateChart function periodically (adjust the interval as needed)
+        setInterval(updateChart, 5000); // Update every 5 seconds
+    </script>
+</body>
+</html>

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LED Toggle</title>
+    <script src="https://www.gstatic.com/firebasejs/8.0.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.0.0/firebase-database.js"></script>
+     <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+
+        button {
+            padding: 10px 20px;
+            margin: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            border: none;
+            border-radius: 5px;
+            background-color: #4CAF50; /* Green */
+            color: white;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #45a049; /* Darker green */
+        }
+
+        button:focus {
+            outline: none;
+        }
+    </style>
+</head>
+<body>
+    <!-- Toggle Buttons -->
+    <button onclick="toggleLED(1)">Turn LED ON</button>
+    <button onclick="toggleLED(0)">Turn LED OFF</button>
+
+    <!-- LED Status -->
+    <p id="statusText">LED is OFF</p>
+
+    <script>
+        var firebaseConfig = {
+            apiKey: "AIzaSyCjaO8gQZrCXVSLMfA3gP79-p1ku5Xe2Xs",
+  authDomain: "relay-50809.firebaseapp.com",
+  databaseURL: "https://relay-50809-default-rtdb.firebaseio.com",
+  projectId: "relay-50809",
+  storageBucket: "relay-50809.appspot.com",
+  messagingSenderId: "628713375452",
+  appId: "1:628713375452:web:9161b0e96c003dc7d5d619"
+        };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+
+        // Reference to the Firebase database
+        var firebaseRef = firebase.database().ref("LED_STATUS");
+
+        // Function to toggle LED status
+        function toggleLED(status) {
+            firebaseRef.set(status);
+
+            // Update status text
+            var statusText = document.getElementById("statusText");
+            statusText.textContent = status === 1 ? "LED is ON" : "LED is OFF";
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="icon" href="your-icon-path.ico" type="image/x-icon"> <!-- Replace 'your-icon-path.ico' with the path to your icon file -->   
+    <style>
+        footer {
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <a href="#" class ="logo">SMART SWITCH</a>
+        <div class="btn-box">
+            <nav class="navbar">    
+                <a href="{{ url_for('home') }}" class="active">LOG OUT</a>
+                <a href="{{ url_for('rooms') }}" class="active">ROOMS</a>
+                <a href="https://firebase.google.com/" class="active">ADMIN LOGIN</a>
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/12/User_icon_2.svg/1024px-User_icon_2.svg.png" alt="users Icon" width="30" height="30">
+            <!-- Replace 'guest-icon.png' with the path to your guest icon file -->
+             </nav></div>
+        
+    </header>
+    <section class="home">
+        <div class="home-content">
+            <h1>Hi, I'm Rameez</h1>
+            <h3>Frontend Developer</h3>
+            <p> A smart switch is a remotely controllable electrical switch that allows users to turn devices on or off via smartphone apps or voice commands, providing convenience, energy savings, and home automation..</p>
+            <div class="btn-box">
+            <a href="{{ url_for('about') }}" class="active">About us</a>
+            </div>
+        </div>
+        <span class="home-imghover"></span>
+    </section>
+
+    <footer>
+        &copy; 2024 Your Website Name. All rights reserved.
+    </footer>
+</body>
+</html>
